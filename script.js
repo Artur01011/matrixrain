@@ -3,6 +3,19 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+let gradient;
+function gradientInit() {
+    gradient = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 100, canvas.width / 2, canvas.height / 2, 400);
+    gradient.addColorStop(0, 'red');
+    gradient.addColorStop(0.2, 'yellow');
+    gradient.addColorStop(0.4, 'green');
+    gradient.addColorStop(0.6, 'cyan');
+    gradient.addColorStop(0.8, 'blue');
+    gradient.addColorStop(1, 'magenta');
+}
+gradientInit();
+
 class Symbol {
     constructor(x, y, fontSize, canvasHeight) {
         this.characters = '是石好你杰米响凡同不あいうえおかきくけこさしすせそ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -31,22 +44,22 @@ class Effect {
         this.fontSize = 25;
         this.columns = this.canvasWidth / this.fontSize;
         this.symbols = [];
-        this.#initialaze();
+        this.#initialize();
     }
 
-    #initialaze() {
+    #initialize() {
         for (let i = 0; i < this.columns; i++) {
             this.symbols[i] = new Symbol(i, 0, this.fontSize, this.canvasHeight);
-
         }
     }
-}
-resize(width, height){
-    this.canvasWidth = width;
-    this.canvasHeight = height;
-    this.columns = this.canvasWidth / this.fontSize;
-    this.symbols = [];
-    this.#initialize;
+
+    resize(width, height) {
+        this.canvasWidth = width;
+        this.canvasHeight = height;
+        this.columns = this.canvasWidth / this.fontSize;
+        this.symbols = [];
+        this.#initialize();
+    }
 }
 
 
@@ -63,7 +76,7 @@ function animate(timeStamp) {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         ctx.textAlign = 'center';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = gradient; //'green';
         ctx.font = effect.fontSize + 'px monospace';
         effect.symbols.forEach(symbol => symbol.draw(ctx));
         timer = 0;
@@ -79,4 +92,5 @@ window.addEventListener('resize', function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     effect.resize(canvas.width, canvas.height);
+    gradientInit();
 });
